@@ -13,7 +13,7 @@ public static class Ioc
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
     {
-        services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+        services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));// need to use IOPtions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();

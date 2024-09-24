@@ -1,4 +1,6 @@
+using BuberDinner.Api.Filters;
 using BuberDinner.Api.Middleware;
+using Microsoft.AspNetCore.Diagnostics;
 using static BuberDinner.Application.IoC;
 using static BuberDinner.Infrastructure.Ioc;
 
@@ -9,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
     builder.Services.AddControllers();
+    //builder.Services.AddControllers(options => options.Filters
+    //    .Add<ErrorHadlingFilterAttribute>());
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration);
     builder.Services.AddRouting(opts =>
@@ -20,13 +24,25 @@ var builder = WebApplication.CreateBuilder(args);
 
 {
     var app = builder.Build();
-    app.UseMiddleware<ErrorHandlingMiddleware>();
+    //app.UseMiddleware<ErrorHandlingMiddleware>();
     // Configure the HTTP request pipeline.
+    // global exception handler
+    app.UseExceptionHandler("/error");
+    // minimal api aproach - same implementation of Errors Controller
+    app.Map("/error", (HttpContext httpContext) =>
+    {
+        Exception? exception = httpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+        return Results.Problem(title: exception?.Message);
+    });
+
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+
+
 
     app.UseHttpsRedirection();
     app.UseAuthorization();
