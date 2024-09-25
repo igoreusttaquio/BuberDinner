@@ -1,4 +1,5 @@
-﻿using BuberDinner.Application.Common.Interfaces.Authentication;
+﻿using BuberDinner.Application.Common.Errors;
+using BuberDinner.Application.Common.Interfaces.Authentication;
 using BuberDinner.Application.Common.Interfaces.Persistence;
 using BuberDinner.Domain.Entities;
 
@@ -12,7 +13,7 @@ public class AuthenticationService(IJwtTokenGenerator jwtTokenGenerator, IUserRe
     {
         if (_userRepository.GetUserByEmail(email) is not User user)
         {
-            throw new Exception("User with give e-mail already exists!");
+            throw new Exception("User with give e-mail does not exists!");
         }
 
         if (user.Password.Equals(password) is false)
@@ -29,7 +30,7 @@ public class AuthenticationService(IJwtTokenGenerator jwtTokenGenerator, IUserRe
     {
         if (_userRepository.GetUserByEmail(email) is not null)
         {
-            throw new Exception("User with give e-mail already exists!");
+            throw new DuplicateEmailException("User with give e-mail already exists!");
         }
 
         User user = new()
