@@ -19,7 +19,7 @@ public class AuthenticationService(IJwtTokenGenerator jwtTokenGenerator, IUserRe
 
         if (user.Password.Equals(password) is false)
         {
-            throw new Exception("Invalid password.");
+            return Errors.Authentication.InvalidCredentials;
         }
         var token = _jwtTokenGenerator.GenerateToken(user);
 

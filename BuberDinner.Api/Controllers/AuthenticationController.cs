@@ -1,5 +1,4 @@
 ﻿//using BuberDinner.Api.Filters;
-using BuberDinner.Application.Common.Errors;
 using BuberDinner.Application.Services.Authentication;
 using BuberDinner.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +8,7 @@ namespace BuberDinner.Api.Controllers;
 [ApiController]
 [Route("api/auth")]
 //[ErrorHadlingFilter]
-public class AuthenticationController(IAuthenticationService authenticationService) : ControllerBase
+public class AuthenticationController(IAuthenticationService authenticationService) : ApiController
 {
     private readonly IAuthenticationService _authenticationService = authenticationService;
     [HttpPost("register")]
@@ -26,7 +25,7 @@ public class AuthenticationController(IAuthenticationService authenticationServi
         return resgisterResult.MatchFirst(
             // scoped
             resgisterResult => Ok(MapAuthResult(resgisterResult)),
-            error => Problem(error.Description, statusCode: StatusCodes.Status409Conflict)
+            error => Problem(error)
             );
     }
 
@@ -35,9 +34,9 @@ public class AuthenticationController(IAuthenticationService authenticationServi
     {
         var authResult = _authenticationService.Login(request.Email, request.Password);
 
-        return authResult.MatchFirst(
+        return authResult.Match(
             sucess => Ok(MapAuthResult(sucess)),
-            error => Problem(error.Description, statusCode: StatusCodes.Status400BadRequest));
+            errors => Problem([.. errors]));
     }
 
     private static AuthenticationResponse MapAuthResult(AuthenticationResult authResult)
