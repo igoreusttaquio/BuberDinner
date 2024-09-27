@@ -20,6 +20,17 @@ public abstract class ApiController : ControllerBase
 
         };
 
-        return Problem(statusCode: statusCode, title: firstError.Description);
+        //HttpContext.Items["errors"] = erros;
+        // var details = string.Join(",", erros.Select(e => $"{e.Code} - {e.Description}"));
+
+        //var details = new ProblemDetails
+        //{
+        //    Extensions = (IDictionary<string, object?>)erros.ToDictionary(erro => erro.Code, erro => erro),
+        //    Status = statusCode,
+        //    Title = firstError.Description
+        //};
+
+
+        return Problem(statusCode: statusCode, title: firstError.Description /*,detail: details*/);
     }
 }

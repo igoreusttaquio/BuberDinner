@@ -1,5 +1,7 @@
 ﻿//using BuberDinner.Api.Filters;
-using BuberDinner.Application.Services.Authentication;
+using BuberDinner.Application.Services.Authentication.Commands;
+using BuberDinner.Application.Services.Authentication.Common;
+using BuberDinner.Application.Services.Authentication.Queries;
 using BuberDinner.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +10,10 @@ namespace BuberDinner.Api.Controllers;
 [ApiController]
 [Route("api/auth")]
 //[ErrorHadlingFilter]
-public class AuthenticationController(IAuthenticationService authenticationService) : ApiController
+public class AuthenticationController(IAuthenticationCommandService authenticationService, IAuthenticationQueryService authenticationQueryService) : ApiController
 {
-    private readonly IAuthenticationService _authenticationService = authenticationService;
+    private readonly IAuthenticationCommandService _authenticationService = authenticationService;
+    private readonly IAuthenticationQueryService _authenticationQueryService = authenticationQueryService;
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest request)
     {
@@ -32,7 +35,7 @@ public class AuthenticationController(IAuthenticationService authenticationServi
     [HttpPost("login")]
     public IActionResult Login(LoginRequest request)
     {
-        var authResult = _authenticationService.Login(request.Email, request.Password);
+        var authResult = _authenticationQueryService.Login(request.Email, request.Password);
 
         return authResult.Match(
             sucess => Ok(MapAuthResult(sucess)),
