@@ -1,5 +1,6 @@
 //using BuberDinner.Api.Filters;
 //using BuberDinner.Api.Middleware;
+using Mapster;
 using Microsoft.AspNetCore.Diagnostics;
 using static BuberDinner.Application.IoC;
 using static BuberDinner.Infrastructure.Ioc;
@@ -15,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
     //    .Add<ErrorHadlingFilterAttribute>());
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddMapster();
     builder.Services.AddRouting(opts =>
     {
         opts.LowercaseUrls = true;
