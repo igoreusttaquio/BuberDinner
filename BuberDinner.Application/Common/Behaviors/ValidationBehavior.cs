@@ -6,7 +6,7 @@ using MediatR;
 
 namespace BuberDinner.Application.Common.Behaviors;
 
-public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? validator) : IPipelineBehavior<TRequest, TResponse> 
+public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null) : IPipelineBehavior<TRequest, TResponse> 
     where TRequest : IRequest<TResponse>
     where TResponse : IErrorOr
 {
