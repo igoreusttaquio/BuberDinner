@@ -46,6 +46,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
     app.UseHttpsRedirection();
+    app.UseAuthentication();// middleware
     app.UseAuthorization();
     app.MapControllers();
 
