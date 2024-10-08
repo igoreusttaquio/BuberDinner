@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BuberDinner.Api.Controllers;
 
@@ -9,6 +10,22 @@ public abstract class ApiController : ControllerBase
     [ApiExplorerSettings(IgnoreApi = true)]
     protected IActionResult Problem(params Error[] erros)
     {
+        if (erros.Count() is 0) return Problem();
+
+        if(erros.All(error => error.Type == ErrorType.Validation))
+        {
+            var modelStadeDictionary = new ModelStateDictionary();
+
+            foreach(var error in erros)
+            {
+                modelStadeDictionary.AddModelError(
+                    error.Code, 
+                    error.Description);
+            }
+
+            return ValidationProblem(modelStadeDictionary);
+        }
+
         var firstError = erros[0];
 
         var statusCode = firstError.Type switch
