@@ -2,9 +2,9 @@
 using BuberDinner.Application.Common.Interfaces.Persistence;
 using ErrorOr;
 using MediatR;
-using BuberDinner.Domain.Entities;
 using BuberDinner.Application.Common.Interfaces.Authentication;
 using BuberDinner.Application.Authentication.Common;
+using BuberDinner.Domain.User;
 
 namespace BuberDinner.Application.Authentication.Commands.Register;
 
@@ -20,13 +20,12 @@ public class RegisterCommandHandler(IUserRepository userRepository, IJwtTokenGen
             return Errors.User.DuplicateEmail;
         }
 
-        User user = new()
-        {
-            Email = command.Email,
-            FirstName = command.FirstName,
-            LastName = command.LastName,
-            Password = command.Password
-        };
+        User user = User.Create(
+            command.FirstName,
+            command.LastName,
+            command.Email,
+            command.Password
+            );
 
         _userRepository.Add(user);
         var token = _jwtTokenGenerator.GenerateToken(user);

@@ -1,4 +1,4 @@
-﻿namespace BuberDinner.Domain.Models;
+﻿namespace BuberDinner.Domain.Common.Models;
 
 public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>
     where TId : notnull

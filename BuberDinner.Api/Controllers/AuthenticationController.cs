@@ -52,6 +52,6 @@ public class AuthenticationController(ISender mediator, IMapper mapper) : ApiCon
 
     private static AuthenticationResponse MapAuthResult(AuthenticationResult authResult)
     {
-        return new AuthenticationResponse(authResult.User.Id, authResult.User.FirstName, authResult.User.LastName, authResult.User.Email, authResult.Token);
+        return new AuthenticationResponse(authResult.User.Id.Value, authResult.User.FirstName, authResult.User.LastName, authResult.User.Email, authResult.Token);
     }
 }
