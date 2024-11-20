@@ -19,8 +19,15 @@ public static class Ioc
     {
 
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+        services.AddPersistence();
         services.AddAuth(configuration);
+        return services;
+    }
+
+    public static IServiceCollection AddPersistence(this IServiceCollection services)
+    {
+        services.AddScoped<IMenuRepository, MenuRepository>();
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         return services;
     }
 

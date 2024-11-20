@@ -20,13 +20,11 @@ public class MenusController(ISender sender) : ApiController
             x.Items.ConvertAll(x => new MenuItemCommand(x.Name, x.Description))));
         var command = new CreateMenuCommand(request.Name, request.Description, menuSections, hostId);
 
-        var response = await _sender.Send(command);
+        var createdMenuResult = await _sender.Send(command);
 
-        if(response.IsError)
-        {
-            return Problem([.. response.Errors]);
-        }
-        return Ok(response);
+        // return createdMenuResult.Match(menu => Ok(menu), errors => Problem([.. errors]));
+
+        return createdMenuResult.Match(Ok, errors => Problem([.. errors]));
     }
 
 }
