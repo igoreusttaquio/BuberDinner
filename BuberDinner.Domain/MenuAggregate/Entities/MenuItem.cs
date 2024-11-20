@@ -1,7 +1,7 @@
 ﻿using BuberDinner.Domain.Common.Models;
-using BuberDinner.Domain.Menu.ValueObjects;
+using BuberDinner.Domain.MenuAggregate.ValueObjects;
 
-namespace BuberDinner.Domain.Menu.Entities;
+namespace BuberDinner.Domain.MenuAggregate.Entities;
 
 public class MenuItem : Entity<MenuItemId>
 {
@@ -15,7 +15,7 @@ public class MenuItem : Entity<MenuItemId>
     }
 
     public static MenuItem Create(
-        string name, 
+        string name,
         string description)
     {
         return new(

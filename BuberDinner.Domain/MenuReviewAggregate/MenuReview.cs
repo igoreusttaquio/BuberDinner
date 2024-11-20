@@ -1,10 +1,10 @@
 ﻿using BuberDinner.Domain.Common.Models;
 using BuberDinner.Domain.Common.ValueObjects;
-using BuberDinner.Domain.Host.ValueObjects;
-using BuberDinner.Domain.Menu.ValueObjects;
-using BuberDinner.Domain.MenuReview.ValueObjects;
+using BuberDinner.Domain.HostAggregate.ValueObjects;
+using BuberDinner.Domain.MenuAggregate.ValueObjects;
+using BuberDinner.Domain.MenuReviewAggregate.ValueObjects;
 
-namespace BuberDinner.Domain.MenuReview;
+namespace BuberDinner.Domain.MenuReviewAggregate;
 
 public class MenuReview : AggregateRoot<MenuReviewId>
 {
