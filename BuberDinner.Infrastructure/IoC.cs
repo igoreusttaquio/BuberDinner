@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text.Unicode;
+using Microsoft.EntityFrameworkCore;
+using BuberDinner.Infrastructure.Persistence.Repositories;
 
 namespace BuberDinner.Infrastructure;
 
@@ -26,6 +28,8 @@ public static class Ioc
 
     public static IServiceCollection AddPersistence(this IServiceCollection services)
     {
+        services.AddDbContext<BuberDinnerDbContext>(options =>
+            options.UseSqlServer(connectionString: "Server=localhost;Database=BuberDinner;Trusted_Connection=True;TrustServerCertificate=True;"));
         services.AddScoped<IMenuRepository, MenuRepository>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         return services;
@@ -37,7 +41,7 @@ public static class Ioc
 
         configuration.Bind(JwtSettings.SectionName, jwtSettings);
 
-        //services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));// need to use IOPtions
+        //services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));// need to use IOptions
         services.AddSingleton(Options.Create(jwtSettings));
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         // returns authentication builder

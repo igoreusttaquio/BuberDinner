@@ -5,6 +5,7 @@ namespace BuberDinner.Domain.DinnerAggregate.ValueObjects;
 public class DinnerId : ValueObject
 {
     public Guid Value { get; }
+    private DinnerId() { }
 
     private DinnerId(Guid value)
     {
